@@ -1,0 +1,21 @@
+name: Build BallUP IPA
+on:
+  workflow_dispatch:
+  push:
+    branches: [ios-altstore]
+    paths: ['ios/**', '.github/workflows/ios.yml']
+permissions:
+  contents: read
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build IPA for AltStore
+        run: bash ios/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BallUP-iPhone
+          path: ios/dist/BallUP-1.0.0.ipa
+          if-no-files-found: error
